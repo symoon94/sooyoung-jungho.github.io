@@ -1,4 +1,5 @@
 import Image from "next/image";
+import GiscusComments from "./components/GiscusComments.client";
 
 export default function Home() {
   return (
@@ -103,6 +104,8 @@ export default function Home() {
           </p>
         </a>
       </div>
+
+      <GiscusComments />
     </main>
   );
 }

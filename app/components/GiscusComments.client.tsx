@@ -36,6 +36,6 @@ export default function GiscusComments() {
 
     giscusRef.current.appendChild(scriptEl);
   }, [giscusTheme]);
-
+  
   return <div ref={giscusRef} />;
 }

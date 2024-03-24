@@ -2,7 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,  
-  assetPrefix: "/sooyoung-jungho.github.io/",
   output: 'export',
 };
 

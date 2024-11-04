@@ -1,10 +1,11 @@
-import Image from "next/image";
+
 import GiscusComments from "./components/GiscusComments.client";
+import RsvpDialog from './components/RsvpDialog';
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center p-4 bg-white dark:bg-gray-900">
-      {/* 헤더 섹션 */}
+      <RsvpDialog />
       <div className="w-full max-w-md text-center my-8">
         <h1 className="text-3xl font-serif mb-2 text-gray-800 dark:text-gray-100">
           수영 ♥️ 정호
@@ -28,7 +29,7 @@ export default function Home() {
       <div className="w-full max-w-md text-center my-8 space-y-4 px-4">
         <p className="text-gray-700 dark:text-gray-200 leading-relaxed">
           서로 마주보며 다져온 사랑을 이제 함께 한 곳을 바라보며
-          걸어가고자 합니다. 저희의 새로운 시작을 
+          걸어가고자 합니다. 저희의 새로운 시작을
           축복해 주시면 감사하겠습니다.
         </p>
       </div>

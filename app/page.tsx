@@ -49,7 +49,7 @@ export default function Home() {
 
   return (
     <main
-      className="relative h-screen overflow-y-scroll snap-y snap-mandatory"
+      className="relative h-screen overflow-y-scroll"
       style={{
         backgroundImage: 'url(/paper.jpg)',
         backgroundRepeat: 'repeat',
@@ -61,7 +61,7 @@ export default function Home() {
       <Snowfall />
 
       {/* 첫 번째 섹션: 메인 사진과 타이틀 */}
-      <section className="relative z-10 h-[100vh] flex flex-col items-center justify-center snap-start p-4">
+      <section className="relative z-10 h-[100vh] flex flex-col items-center justify-center p-4">
         <div
           ref={titleRef as React.RefObject<HTMLDivElement>}
           className={`w-full max-w-md text-center transition-opacity duration-1000 ${isTitleVisible ? 'opacity-100' : 'opacity-0'
@@ -120,7 +120,7 @@ export default function Home() {
       </section>
 
       {/* 두 번째 페이지: 메시지 */}
-      <section className="relative z-10 h-[100vh] flex flex-col items-center justify-center snap-start p-4">
+      <section className="relative z-10 h-[100vh] flex flex-col items-center justify-center p-4">
         <div
           ref={messageRef as React.RefObject<HTMLDivElement>}
           className={`w-full max-w-md text-center transition-opacity duration-1000 ${isMessageVisible ? 'opacity-100' : 'opacity-0'}`}
@@ -182,12 +182,12 @@ export default function Home() {
 
 
       {/* 갤러리 섹션 */}
-      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center snap-start p-4">
+      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
         <Gallery />
       </section>
 
       {/* 캘린더 섹션 (3번째 페이지) */}
-      <section className="relative z-10 h-[100vh] flex flex-col items-center justify-center snap-start p-4">
+      <section className="relative z-10 h-[100vh] flex flex-col items-center justify-center p-4">
         <div
           ref={dateRef as React.RefObject<HTMLDivElement>}
           className={`w-full max-w-md text-center transition-opacity duration-1000 ${isDateVisible ? 'opacity-100' : 'opacity-0'}`}
@@ -309,7 +309,7 @@ export default function Home() {
       </section>
 
       {/* 오시는 길 섹션 */}
-      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center snap-start p-4">
+      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
         <div className="w-full max-w-md mx-auto">
           {/* Location 타이틀 */}
           <div className="text-center mb-8">
@@ -333,7 +333,7 @@ export default function Home() {
       </section>
 
       {/* 연락처 섹션 */}
-      <section className="relative z-10 h-[100vh] flex flex-col items-center justify-center snap-start p-4">
+      <section className="relative z-10 h-[100vh] flex flex-col items-center justify-center p-4">
         <div className="w-full max-w-md">
           {/* 신랑신부 연락처 */}
           <div className="flex justify-between mb-12">
@@ -375,7 +375,7 @@ export default function Home() {
       </section>
 
       {/* 마음 전하실 곳 섹션 */}
-      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center snap-start p-4">
+      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
         <div className="w-full max-w-md text-center">
           {/* 타이틀 */}
           <div className="text-center mb-8">
@@ -395,7 +395,7 @@ export default function Home() {
       </section>
 
       {/* 참석여부 확인 섹션 */}
-      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center snap-start p-4">
+      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
         <div className="w-full max-w-md text-center space-y-8">
           {/* RSVP 타이틀 */}
           <div className="text-center mb-8">

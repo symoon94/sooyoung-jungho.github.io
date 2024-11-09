@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 import AccountInfo from './components/AccountInfo';
@@ -79,17 +80,19 @@ export default function Home() {
           {/* 메인 사진들 */}
           <div className="flex justify-center gap-6 mt-12 mb-12">
             <div className="w-48 h-64 relative">
-              <img
-                src="gallery/sooyoung.png"
+              <Image
+                src="/gallery/sooyoung.png"
                 alt="Sooyoung Photo"
-                className="w-full h-full object-cover rounded-lg shadow-lg"
+                className="object-cover rounded-lg shadow-lg"
+                fill
               />
             </div>
             <div className="w-48 h-64 relative">
-              <img
-                src="gallery/jungho.png"
+              <Image
+                src="/gallery/jungho.png"
                 alt="Jungho Photo"
-                className="w-full h-full object-cover rounded-lg shadow-lg"
+                className="object-cover rounded-lg shadow-lg"
+                fill
               />
             </div>
           </div>
@@ -292,7 +295,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* 메시지 */}
             <p className="text-gray-600 font-serif text-lg">
               정호 <span className="text-red-400">♥</span> 수영의 결혼식이 <span className="text-green-800">{timeLeft.days}일</span> 남았습니다.
             </p>
@@ -384,7 +386,7 @@ export default function Home() {
 
           {/* 안내 메시지 */}
           <p className="text-gray-600 mb-8 italic">
-            "신랑신부에게 축하의 마음을 전해주세요"
+            &ldquo;신랑신부에게 축하의 마음을 전해주세요&rdquo;
           </p>
 
           {/* 계좌 정보 */}

@@ -71,16 +71,30 @@ export default function Home() {
     if (!mounted) return;
 
     const calculateTimeLeft = () => {
-      const weddingDate = new Date(2025, 1, 16).getTime();
+      const weddingDate = new Date(2025, 1, 16, 14, 0, 0).getTime();
       const now = new Date().getTime();
       const difference = weddingDate - now;
 
-      setTimeLeft({
-        days: Math.ceil(difference / (1000 * 60 * 60 * 24)),
-        hours: String(new Date().getHours()).padStart(2, '0'),
-        minutes: String(new Date().getMinutes()).padStart(2, '0'),
-        seconds: String(new Date().getSeconds()).padStart(2, '0')
-      });
+      if (difference <= 0) {
+        setTimeLeft({
+          days: 0,
+          hours: '00',
+          minutes: '00',
+          seconds: '00'
+        });
+      } else {
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        setTimeLeft({
+          days,
+          hours: String(hours).padStart(2, '0'),
+          minutes: String(minutes).padStart(2, '0'),
+          seconds: String(seconds).padStart(2, '0')
+        });
+      }
     };
 
     calculateTimeLeft();
@@ -446,10 +460,9 @@ export default function Home() {
 
             {/* 안내 메시지 */}
             <div className="space-y-4 text-gray-600">
+              <p>부족함없이 식사를 제공할 수 있기 위함이니</p>
               <p>참석에 부담 가지지 말아주시고,</p>
-              <p>편하게 알려주세요.</p>
-              <p>저희의 정성을 다하는 준비에 도움이 될 것 같아</p>
-              <p>참석 여부를 알려주시면 감사하겠습니다.</p>
+              <p>편하게 알려주시면 감사합니다.</p>
             </div>
 
             {/* 구분선 */}

@@ -11,7 +11,7 @@ declare global {
 export default function Map() {
     useEffect(() => {
         const initMap = () => {
-            const nobleValenti = new window.naver.maps.LatLng(37.508811, 127.056127); // 노블발렌티 대치 좌표
+            const nobleValenti = new window.naver.maps.LatLng(37.503518, 127.065358); // 노블발렌티 대치 좌표
 
             const mapOptions = {
                 center: nobleValenti,
@@ -72,8 +72,34 @@ export default function Map() {
     }, []);
 
     return (
-        <div className="w-full aspect-square rounded-xl overflow-hidden">
-            <div id="map" className="w-full h-full" />
+        <div className="space-y-4">
+            <div className="w-full aspect-square rounded-xl overflow-hidden">
+                <div id="map" className="w-full h-full" />
+            </div>
+            <div className="flex justify-center gap-8">
+                <a
+                    href="https://naver.me/5Rct8LyC"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-col items-center gap-2"
+                >
+                    <svg className="w-8 h-8" viewBox="0 0 24 24" fill="#666666">
+                        <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z"/>
+                    </svg>
+                    <span className="text-sm text-[#666666]">네이버지도</span>
+                </a>
+                <a
+                    href="https://tmap.life/9ac9c57c"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-col items-center gap-2"
+                >
+                    <svg className="w-8 h-8" viewBox="0 0 24 24" fill="#666666">
+                        <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z"/>
+                    </svg>
+                    <span className="text-sm text-[#666666]">티맵</span>
+                </a>
+            </div>
         </div>
     );
 } 

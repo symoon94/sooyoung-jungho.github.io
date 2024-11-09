@@ -34,7 +34,7 @@ export default function RsvpModal({ isOpen, onClose }: RsvpModalProps) {
                 body: JSON.stringify({
                     message: `RSVP submission from ${formData.get('name')}`,
                     content: Buffer.from(JSON.stringify(content, null, 2)).toString('base64'),
-                    branch: 'main'
+                    branch: 'rsvp'
                 })
             });
 
@@ -86,9 +86,12 @@ export default function RsvpModal({ isOpen, onClose }: RsvpModalProps) {
                     const formData = new FormData(e.currentTarget);
                     handleSubmit(formData);
                 }} className="space-y-4">
+                    <input type="hidden" name="side" value={activeTab} />
+                    
                     <div>
                         <input
                             type="text"
+                            name="name"
                             placeholder="성함"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
@@ -97,10 +100,10 @@ export default function RsvpModal({ isOpen, onClose }: RsvpModalProps) {
                         />
                     </div>
 
-                    {/* 참석여부 부분 수정 */}
                     <div>
                         <p className="mb-2">참석여부</p>
                         <div className="flex gap-2">
+                            <input type="hidden" name="attendance" value={attendance} />
                             <button
                                 type="button"
                                 className={`flex-1 py-2 rounded ${attendance === '참석' ? 'bg-[#B4A89F] text-white' : 'border'
@@ -128,11 +131,11 @@ export default function RsvpModal({ isOpen, onClose }: RsvpModalProps) {
                         </div>
                     </div>
 
-                    {/* 참석인원 부분 수정 */}
                     <div>
                         <p className="mb-2">참석인원</p>
                         <input
                             type="number"
+                            name="numberOfGuests"
                             min="1"
                             value={attendeeCount}
                             onChange={(e) => setAttendeeCount(Math.max(1, parseInt(e.target.value) || 1))}
@@ -142,6 +145,7 @@ export default function RsvpModal({ isOpen, onClose }: RsvpModalProps) {
 
                     <div>
                         <textarea
+                            name="message"
                             placeholder="전달 사항"
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}

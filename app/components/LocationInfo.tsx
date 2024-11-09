@@ -6,12 +6,12 @@ export default function LocationInfo() {
     const [activeTab, setActiveTab] = useState('parking');
 
     return (
-        <div className="w-full max-w-md mx-auto px-4">
+        <div className="w-full max-w-md mx-auto px-4 korean-font">
             <div className="flex border-b border-gray-200">
                 <button
                     className={`flex-1 py-3 text-sm font-medium ${activeTab === 'parking'
-                            ? 'border-b-2 border-gray-800 text-gray-800'
-                            : 'text-gray-500'
+                        ? 'border-b-2 border-green-800 text-green-800'
+                        : 'text-gray-500'
                         }`}
                     onClick={() => setActiveTab('parking')}
                 >
@@ -19,8 +19,8 @@ export default function LocationInfo() {
                 </button>
                 <button
                     className={`flex-1 py-3 text-sm font-medium ${activeTab === 'transport'
-                            ? 'border-b-2 border-gray-800 text-gray-800'
-                            : 'text-gray-500'
+                        ? 'border-b-2 border-green-800 text-green-800'
+                        : 'text-gray-500'
                         }`}
                     onClick={() => setActiveTab('transport')}
                 >

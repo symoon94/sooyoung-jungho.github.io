@@ -1,123 +1,73 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
-
-interface Particle {
-    position: THREE.Vector3;
-    rotation: THREE.Euler;
-    speed: number;
-    rotationSpeed: number;
-}
 
 export default function Snowfall() {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (!containerRef.current) return;
-
         const container = containerRef.current;
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
 
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({
-            alpha: true,
-            antialias: true
-        });
-
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor(0x000000, 0); // 완전 투명 배경
-        container.appendChild(renderer.domElement);
-
-        // 하트 모양 생성
-        const createHeartShape = () => {
-            const shape = new THREE.Shape();
-            const x = 0, y = 0;
-
-            shape.moveTo(x, y);
-            shape.bezierCurveTo(x + 0.5, y + 0.3, x + 0.8, y - 0.3, x, y - 0.8);
-            shape.bezierCurveTo(x - 0.8, y - 0.3, x - 0.5, y + 0.3, x, y);
-
-            return shape;
+        // 캔버스 설정
+        const resize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         };
+        resize();
+        container.appendChild(canvas);
 
-        const heartShape = createHeartShape();
-        const geometry = new THREE.ShapeGeometry(heartShape);
-        const material = new THREE.MeshBasicMaterial({
-            color: 0xe6ff99,
-            transparent: true,
-            opacity: 0.3,
-            side: THREE.DoubleSide
-        });
-
-        // 더 많은 파티클 생성
-        const particles: Particle[] = [];
-        const numParticles = 50; // 파티클 수 증가
-
-        for (let i = 0; i < numParticles; i++) {
-            const heart = new THREE.Mesh(geometry, material);
-
-            // 더 넓은 영역에 분포
-            const x = (Math.random() - 0.5) * 20; // 좌우 분포 줄임
-            const y = Math.random() * 40 - 10; // 시작 높이 다양화
-            const z = (Math.random() - 0.5) * 10; // 앞뒤 분포 줄임
-
-            heart.position.set(x, y, z);
-            heart.scale.set(0.18, 0.18, 0.18); // 크기를 더 작게 조정
-
-            scene.add(heart);
-
-            particles.push({
-                position: heart.position,
-                rotation: heart.rotation,
-                speed: 0.01 + Math.random() * 0.02, // 속도 줄임
-                rotationSpeed: (Math.random() - 0.5) * 0.01 // 회전 속도 줄임
-            });
-        }
-
-        // 카메라 위치 조정
-        camera.position.z = 15;
+        // 필름 노이즈 파티클 설정
+        const particles: { x: number; y: number; size: number; life: number }[] = [];
+        const maxParticles = 30; // 동시에 존재할 수 있는 최대 파티클 수
 
         const animate = () => {
-            requestAnimationFrame(animate);
+            if (!ctx) return;
 
-            particles.forEach((particle, i) => {
-                // 아래로 떨어지는 움직임
-                particle.position.y -= particle.speed;
+            // 캔버스 초기화
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                // 좌우로 살짝 흔들리는 움직임 (더 미세하게)
-                particle.position.x += Math.sin(Date.now() * 0.001 + i) * 0.003;
+            // 새로운 파티클 생성
+            if (particles.length < maxParticles && Math.random() > 0.85) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 1 + 1, // 1-3px 크기
+                    life: Math.random() * 20 + 10 // 10-30 프레임 동안 존재
+                });
+            }
 
-                // 회전
-                particle.rotation.z += particle.rotationSpeed;
+            // 파티클 그리기 및 업데이트
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                
+                // 파티클 그리기
+                ctx.fillStyle = `rgba(0, 0, 0, ${Math.min(p.life / 10, 0.4)})`;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
 
-                // 화면 아래로 벗어나면 다시 위로
-                if (particle.position.y < -15) {
-                    particle.position.y = 15;
-                    particle.position.x = (Math.random() - 0.5) * 20;
-                    particle.position.z = (Math.random() - 0.5) * 10;
+                // 수명 감소
+                p.life--;
+
+                // 수명이 다한 파티클 제거
+                if (p.life <= 0) {
+                    particles.splice(i, 1);
                 }
-            });
+            }
 
-            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
         };
 
         animate();
 
-        const handleResize = () => {
-            const width = window.innerWidth;
-            const height = window.innerHeight;
-
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-            renderer.setSize(width, height);
-        };
-
-        window.addEventListener('resize', handleResize);
+        window.addEventListener('resize', resize);
 
         return () => {
-            window.removeEventListener('resize', handleResize);
-            container.removeChild(renderer.domElement);
+            window.removeEventListener('resize', resize);
+            container.removeChild(canvas);
         };
     }, []);
 
@@ -132,6 +82,8 @@ export default function Snowfall() {
                 height: '100vh',
                 zIndex: 0,
                 pointerEvents: 'none',
+                mixBlendMode: 'multiply',
+                opacity: 0.3
             }}
         />
     );

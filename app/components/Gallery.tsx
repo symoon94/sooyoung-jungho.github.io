@@ -38,8 +38,8 @@ export default function Gallery() {
 
             {/* 썸네일 슬라이더 */}
             <div className="flex justify-center items-center gap-2 relative">
-                <button 
-                    className="absolute left-0 text-green-800"
+                <button
+                    className="absolute left-0 text-gray-400 text-4xl hover:text-gray-600 transition-colors"
                     onClick={() => setCurrentPhoto(prev => (prev > 0 ? prev - 1 : photos.length - 1))}
                 >
                     ‹
@@ -55,8 +55,8 @@ export default function Gallery() {
                         />
                     </div>
                 ))}
-                <button 
-                    className="absolute right-0 text-green-800"
+                <button
+                    className="absolute right-0 text-gray-400 text-4xl hover:text-gray-600 transition-colors"
                     onClick={() => setCurrentPhoto(prev => (prev < photos.length - 1 ? prev + 1 : 0))}
                 >
                     ›

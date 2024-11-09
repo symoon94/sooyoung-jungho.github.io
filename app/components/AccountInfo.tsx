@@ -108,7 +108,7 @@ export default function AccountInfo() {
                                 <button
                                     className="px-3 py-1 text-sm text-gray-600 bg-gray-100 rounded-md"
                                     onClick={() => {
-                                        navigator.clipboard.writeText('1234567890123');
+                                        navigator.clipboard.writeText('96722786837');
                                     }}
                                 >
                                     복사

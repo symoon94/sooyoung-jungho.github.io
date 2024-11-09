@@ -49,72 +49,74 @@ export default function Home() {
 
   return (
     <main
-      className="relative h-screen overflow-y-scroll"
+      className="relative h-screen overflow-x-hidden overflow-y-scroll snap-y snap-mandatory"
       style={{
         backgroundImage: 'url(/paper.jpg)',
         backgroundRepeat: 'repeat',
-        backgroundSize: '500px 500px',
+        backgroundSize: 'cover',
         backgroundColor: 'rgba(255, 255, 255, 0.85)',
         backgroundBlendMode: 'overlay'
       }}
     >
       <Snowfall />
 
-      {/* 첫 번째 섹션: 메인 사진과 타이틀 */}
-      <section className="relative z-10 h-[100vh] flex flex-col items-center justify-center p-4">
+      {/* 첫 번째 섹션 */}
+      <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-4 sm:p-8 snap-start snap-always">
         <div
           ref={titleRef as React.RefObject<HTMLDivElement>}
-          className={`w-full max-w-md text-center transition-opacity duration-1000 ${isTitleVisible ? 'opacity-100' : 'opacity-0'
+          className={`w-full max-w-4xl mx-auto text-center transition-opacity duration-1000 ${isTitleVisible ? 'opacity-100' : 'opacity-0'
             }`}
         >
           {/* 상단 날짜 */}
-          <div className="inline-block border border-green-800 px-6 py-1 mb-8 text-green-800" style={{ borderRadius: '50%' }}>
+          <div className="inline-block border border-green-800 px-4 sm:px-6 py-1 mb-4 sm:mb-8 text-green-800 text-sm sm:text-base"
+            style={{ borderRadius: '50%' }}>
             2025 02 16
           </div>
 
           {/* The Marriage of */}
-          <h1 className="text-5xl font-serif text-green-800 relative z-10">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-green-800 relative z-10 mb-4 sm:mb-8 italic">
             The Marriage of
           </h1>
 
           {/* 메인 사진들 */}
-          <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 mt-8 mb-8 sm:mt-12 sm:mb-12">
-            <div className="w-64 h-80 sm:w-48 sm:h-64 relative mx-auto">
+          <div className="flex flex-row justify-center gap-3 sm:gap-4 lg:gap-6 my-4 sm:my-6 lg:my-8">
+            <div className="w-[30vw] max-w-[144px] h-[40vw] max-h-[192px] relative">
               <Image
                 src="/gallery/sooyoung.png"
                 alt="Sooyoung Photo"
                 className="object-cover rounded-lg shadow-lg"
                 fill
-                sizes="(max-width: 768px) 256px, 192px"
+                sizes="(max-width: 768px) 30vw, (max-width: 1024px) 144px, 192px"
               />
             </div>
-            <div className="w-64 h-80 sm:w-48 sm:h-64 relative mx-auto">
+            <div className="w-[30vw] max-w-[144px] h-[40vw] max-h-[192px] relative">
               <Image
                 src="/gallery/jungho.png"
                 alt="Jungho Photo"
                 className="object-cover rounded-lg shadow-lg"
                 fill
-                sizes="(max-width: 768px) 256px, 192px"
+                sizes="(max-width: 768px) 30vw, (max-width: 1024px) 144px, 192px"
               />
             </div>
           </div>
 
           {/* 이름 */}
-          <h2 className="text-4xl font-serif text-green-800 mb-8 relative z-10">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-green-800 mb-4 sm:mb-6 lg:mb-8 relative z-10">
             Sooyoung & Jungho
           </h2>
 
           {/* 날짜와 장소 */}
-          <p className="text-green-800 mb-2 font-serif">
+          <p className="text-sm sm:text-base lg:text-lg text-green-800 mb-2 font-serif">
             2025 2 16 SUN 2PM
           </p>
-          <p className="text-green-800 font-serif">
+          <p className="text-sm sm:text-base lg:text-lg text-green-800 font-serif">
             노블발렌티 대치
           </p>
 
           {/* Invitation 원형 */}
-          <div className="mt-12">
-            <div className="inline-block border border-green-800 px-6 py-1 text-green-800" style={{ borderRadius: '50%' }}>
+          <div className="mt-6 sm:mt-8 lg:mt-12">
+            <div className="inline-block border border-green-800 px-4 sm:px-6 py-1 text-green-800 text-sm sm:text-base italic"
+              style={{ borderRadius: '50%' }}>
               invitation
             </div>
           </div>
@@ -122,29 +124,46 @@ export default function Home() {
       </section>
 
       {/* 두 번째 페이지: 메시지 */}
-      <section className="relative z-10 h-[100vh] flex flex-col items-center justify-center p-4">
+      <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-4 sm:p-8 snap-start snap-always">
         <div
           ref={messageRef as React.RefObject<HTMLDivElement>}
           className={`w-full max-w-md text-center transition-opacity duration-1000 ${isMessageVisible ? 'opacity-100' : 'opacity-0'}`}
         >
           {/* Wedding Day */}
-          <div className="text-center text-green-800 my-8">
-            <div className="text-center text-green-800 my-8">
+          <div className="text-center text-green-800 my-4">
+            <div className="text-center text-green-800 my-4">
               <div className="relative">
-                <span className="inline-block font-serif italic text-xl tracking-[0.2em] transform -rotate-6">
-                  wedding
-                </span>
-                <span className="inline-block font-serif italic text-xl tracking-[0.2em] transform rotate-6 ml-2">
-                  day
-                </span>
+                <div className="relative flex justify-center">
+                  {'wedding day'.split('').map((letter, index, array) => {
+                    const mid = Math.floor(array.length / 2);
+                    const distanceFromMid = index - mid;
+                    const rotation = (distanceFromMid * 3.5);
+                    const verticalOffset = Math.pow(Math.abs(distanceFromMid), 1.5) * 1;
+
+                    return (
+                      <span
+                        key={index}
+                        className="inline-block font-serif font-bold italic text-sm tracking-[0.15em] relative"
+                        style={{
+                          transform: `rotate(${rotation}deg) translateY(${verticalOffset}px)`,
+                          transformOrigin: 'bottom center',
+                          color: '#1a472a',
+                          textShadow: '0.5px 0.5px 0px rgba(0,0,0,0.1)'
+                        }}
+                      >
+                        {letter}
+                      </span>
+                    );
+                  })}
+                </div>
+                <div className="font-serif text-sm tracking-wider">02</div>
+                <div className="font-serif text-sm tracking-wider">16</div>
               </div>
-              <div className="font-serif text-xl tracking-wider">02</div>
-              <div className="font-serif text-xl tracking-wider">16</div>
             </div>
           </div>
 
           {/* 메인 텍스트 */}
-          <div className="space-y-8 text-center text-gray-700 mt-16">
+          <div className="space-y-2 text-center text-gray-600 mt-16 korean-font">
             <p>같이 있을 때</p>
             <p>가장 나다운 모습이 되게 하는</p>
             <p>사람을 만났습니다.</p>
@@ -172,7 +191,7 @@ export default function Home() {
             <div className="absolute -left-2 -bottom-2 border border-green-800/20 w-full h-full transform -rotate-1" />
 
             {/* 메인 컨텐츠 테두리 */}
-            <div className="border border-green-800 p-4 text-center text-gray-700 mt-16 bg-white/80 backdrop-blur-sm relative">
+            <div className="border border-green-800 py-4 px-1 text-center text-gray-600 mt-16 backdrop-blur-sm relative korean-font">
               <p>2025년 2월 16일 일요일 오후 2시</p>
               <p>노블발렌티 대치</p>
             </div>
@@ -184,12 +203,12 @@ export default function Home() {
 
 
       {/* 갤러리 섹션 */}
-      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
+      <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-4 sm:p-8 snap-start snap-always">
         <Gallery />
       </section>
 
       {/* 캘린더 섹션 (3번째 페이지) */}
-      <section className="relative z-10 h-[100vh] flex flex-col items-center justify-center p-4">
+      <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-4 sm:p-8 snap-start snap-always">
         <div
           ref={dateRef as React.RefObject<HTMLDivElement>}
           className={`w-full max-w-md text-center transition-opacity duration-1000 ${isDateVisible ? 'opacity-100' : 'opacity-0'}`}
@@ -311,7 +330,7 @@ export default function Home() {
       </section>
 
       {/* 오시는 길 섹션 */}
-      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
+      <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-4 sm:p-8 snap-start snap-always">
         <div className="w-full max-w-md mx-auto">
           {/* Location 타이틀 */}
           <div className="text-center mb-8">
@@ -325,8 +344,8 @@ export default function Home() {
 
           {/* 주소 정보 */}
           <div className="text-center space-y-2 my-8">
-            <h3 className="font-serif text-gray-800">노블발렌티 대치점</h3>
-            <p className="text-gray-600">서울시 강남구 영동대로 325</p>
+            <h3 className="font-serif text-gray-600">노블발렌티 대치점</h3>
+            <p className="font-serif text-gray-600">서울시 강남구 영동대로 325</p>
           </div>
 
           {/* 교통 정보 탭 */}
@@ -335,7 +354,7 @@ export default function Home() {
       </section>
 
       {/* 연락처 섹션 */}
-      <section className="relative z-10 h-[100vh] flex flex-col items-center justify-center p-4">
+      <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-4 sm:p-8 snap-start snap-always">
         <div className="w-full max-w-md">
           {/* 신랑신부 연락처 */}
           <div className="flex justify-between mb-12">
@@ -377,7 +396,7 @@ export default function Home() {
       </section>
 
       {/* 마음 전하실 곳 섹션 */}
-      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
+      <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-4 sm:p-8 snap-start snap-always korean-font">
         <div className="w-full max-w-md text-center">
           {/* 타이틀 */}
           <div className="text-center mb-8">
@@ -388,7 +407,10 @@ export default function Home() {
 
           {/* 안내 메시지 */}
           <p className="text-gray-600 mb-8 italic">
-            &ldquo;신랑신부에게 축하의 마음을 전해주세요&rdquo;
+            &ldquo;필요하신 분들을 위해<br />
+            안내드리니 양해 부탁드립니다.<br />
+            참석하지 못하시더라도 축복해주시는<br />
+            그 마음 감사히 간직하겠습니다.&rdquo;
           </p>
 
           {/* 계좌 정보 */}
@@ -397,7 +419,7 @@ export default function Home() {
       </section>
 
       {/* 참석여부 확인 섹션 */}
-      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
+      <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-4 sm:p-8 snap-start snap-always">
         <div className="w-full max-w-md text-center space-y-8">
           {/* RSVP 타이틀 */}
           <div className="text-center mb-8">

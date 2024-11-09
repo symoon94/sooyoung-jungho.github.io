@@ -12,59 +12,40 @@ export default function RsvpModal({ isOpen, onClose }: RsvpModalProps) {
     const [name, setName] = useState('');
     const [message, setMessage] = useState('');
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
+    const handleSubmit = async (formData: FormData) => {
         try {
             const timestamp = new Date().toISOString();
             const content = {
-                name,
-                side: activeTab,
-                attendance,
-                numberOfGuests: attendance === '참석' ? attendeeCount : 0,
-                message,
+                name: formData.get('name'),
+                side: formData.get('side'),
+                attendance: formData.get('attendance'),
+                numberOfGuests: formData.get('numberOfGuests'),
+                message: formData.get('message'),
                 submittedAt: timestamp
             };
 
-            // Unicode 문자열을 Base64로 인코딩하는 함수
-            const toBase64 = (str: string) => {
-                return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
-                    function (match, p1) {
-                        return String.fromCharCode(parseInt(p1, 16))
-                    }));
-            };
+            // GitHub API 호출
+            await fetch(`https://api.github.com/repos/sooyoung-jungho/sooyoung-jungho.github.io/contents/rsvp/${timestamp}.json`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: `RSVP submission from ${formData.get('name')}`,
+                    content: Buffer.from(JSON.stringify(content, null, 2)).toString('base64'),
+                    branch: 'main'
+                })
+            });
 
-            const response = await fetch(
-                `https://api.github.com/repos/sooyoung-jungho/sooyoung-jungho.github.io/contents/rsvp/${timestamp}.json`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        message: `RSVP submission from ${name}`,
-                        content: toBase64(JSON.stringify(content, null, 2)),
-                        branch: 'main'
-                    })
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error('제출 중 오류가 발생했습니다');
-            }
-
-            alert('참석 여부가 성공적으로 제출되었습니다. 감사합니다.');
+            // 성공 처리 (예: 모달 닫기, 성공 메시지 표시 등)
             onClose();
-            // 폼 초기화
-            setName('');
-            setAttendance('참석');
-            setAttendeeCount(1);
-            setMessage('');
-            setActiveTab('신랑');
+            // 필요하다면 성공 알림 추가
+            alert('참석 여부가 성공적으로 전달되었습니다.');
+
         } catch (error) {
-            console.error('Failed to submit RSVP:', error);
-            alert('제출 중 오류가 발생했습니다. 다시 시도해주세요.');
+            console.error('Error:', error);
+            alert('제출 중 오류가 발생했습니다.');
         }
     };
 
@@ -99,9 +80,12 @@ export default function RsvpModal({ isOpen, onClose }: RsvpModalProps) {
                         신부측 하객
                     </button>
                 </div>
-
                 {/* 폼 */}
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.currentTarget);
+                    handleSubmit(formData);
+                }} className="space-y-4">
                     <div>
                         <input
                             type="text"

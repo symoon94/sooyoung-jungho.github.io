@@ -6,7 +6,7 @@ export default function LocationInfo() {
     const [activeTab, setActiveTab] = useState('parking');
 
     return (
-        <div className="w-full max-w-md mx-auto px-4 korean-font">
+        <div className="w-full max-w-md mx-auto px-4 korean-text">
             <div className="flex border-b border-gray-200">
                 <button
                     className={`flex-1 py-3 text-sm font-medium ${activeTab === 'parking'

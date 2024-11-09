@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Image from 'next/image';
 
 interface Photo {
     id: number;
@@ -20,19 +21,21 @@ export default function Gallery() {
         <div className="w-full max-w-md mx-auto">
             {/* Gallery 타이틀 */}
             <div className="text-center mb-8">
-                <div className="inline-block border border-green-800 px-8 py-2 text-green-800 italic" style={{ borderRadius: '50%' }}>
+                <div className="inline-block border border-green-800 px-8 py-2 text-green-800 italic" style={{ borderRadius: '50%', fontFamily: 'MadeKenfolg' }}>
                     gallery
                 </div>
             </div>
 
             {/* 메인 이미지 */}
-            <div className="mb-4">
-                <img
+            <div className="mb-4 relative w-full h-[500px]">
+                <Image
                     src={photos[currentPhoto].src}
                     alt={photos[currentPhoto].alt}
-                    className="w-full h-[500px] object-cover rounded-lg"
+                    fill
+                    className="object-cover rounded-lg"
                     style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
                     draggable="false"
+                    sizes="(max-width: 768px) 100vw, 768px"
                 />
             </div>
 
@@ -45,13 +48,15 @@ export default function Gallery() {
                     ‹
                 </button>
                 {photos.map((photo, index) => (
-                    <div key={photo.id} className="w-16 h-16 bg-gray-200 rounded-lg cursor-pointer" onClick={() => setCurrentPhoto(index)}>
-                        <img
+                    <div key={photo.id} className="w-16 h-16 bg-gray-200 rounded-lg cursor-pointer relative" onClick={() => setCurrentPhoto(index)}>
+                        <Image
                             src={photo.src}
                             alt={photo.alt}
-                            className="w-full h-full object-cover rounded-lg"
+                            fill
+                            className="object-cover rounded-lg"
                             style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
                             draggable="false"
+                            sizes="64px"
                         />
                     </div>
                 ))}

@@ -2,40 +2,63 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&display=swap');
-
 @font-face {
-  font-family: 'Bodoni Std';
-  src: url('/fonts/BodoniStd-RegularWideOblique.woff2') format('woff2'),
-       url('/fonts/BodoniStd-RegularWideOblique.woff') format('woff');
-  font-style: oblique;
-  font-weight: normal;
-}
-
-@font-face {
-  font-family: 'KoreanNMJM';
-  src: url('/fonts/KoreanNMJM-Regular.woff2') format('woff2'),
-       url('/fonts/KoreanNMJM-Regular.woff') format('woff');
+  font-family: 'GowunBatang-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'MadeKenfolg';
+  src: url('/fonts/made-kenfolg-v2-personal-use.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 기본 폰트 설정 */
 body {
   color: #374151;
   background-color: #ffffff;
+  font-family: 'GowunBatang-Regular', serif;
 }
 
+/* 한글 텍스트를 위한 기본 클래스 */
+.korean-text {
+  font-family: 'GowunBatang-Regular', serif;
+}
+
+/* 영문 텍스트를 위한 클래스들 */
 .bodoni-font {
-  font-family: 'Bodoni Std', serif;
-  font-style: oblique;
+  font-family: 'MadeKenfolg', serif;
+  font-style: normal;
 }
 
-.korean-font {
-  font-family: 'KoreanNMJM', serif;
+.font-serif {
+  font-family: 'MadeKenfolg', serif;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+@keyframes drawPath {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+* {
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }

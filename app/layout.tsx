@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "수영 정호 결혼식에 초대합니다!",
@@ -16,7 +13,7 @@ export const metadata: Metadata = {
     description: "2025.02.16 수영 정호 결혼식에 초대합니다.",
     images: [
       {
-        url: "/gallery/thumbnail.png", // 원하는 썸네일 이미지 경로
+        url: "/gallery/thumbnail.png",
         width: 1200,
         height: 630,
         alt: "Wedding Invitation",
@@ -29,7 +26,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "🩷 Wedding Invitation 🩷",
     description: "2025.02.16 수영 정호 결혼식에 초대합니다.",
-    images: ["/thumbnail.png"], // 원하는 썸네일 이미지 경로
+    images: ["/thumbnail.png"],
   },
 };
 
@@ -40,9 +37,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <head>
-        <link rel="icon" href="/favicon.png" />
-      </head>
       <body>{children}</body>
     </html>
   )

@@ -39,8 +39,8 @@ export default function LocationInfo() {
                     <div className="text-sm text-gray-600 space-y-6">
                         <div>
                             <p className="font-medium mb-2">자가용 이용</p>
-                            <p>네비게이션: "노블발렌티 대치" 또는</p>
-                            <p>"서울시 강남구 영동대로 325" 검색</p>
+                            <p>네비게이션: &ldquo;노블발렌티 대치&rdquo; 또는</p>
+                            <p>&ldquo;서울시 강남구 영동대로 325&rdquo; 검색</p>
                         </div>
 
                         <div>

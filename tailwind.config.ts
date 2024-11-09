@@ -8,8 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      perspective: {
-        '1000': '1000px',
+      colors: {
+        'wedding-pink': '#ffd9d975',
+        'wedding-green': '#0B5F3C',
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -18,6 +19,15 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function({ addUtilities }: { addUtilities: any }) {
+      addUtilities({
+        '.perspective-1000': {
+          'perspective': '1000px',
+        },
+      })
+    },
+  ],
 };
+
 export default config;

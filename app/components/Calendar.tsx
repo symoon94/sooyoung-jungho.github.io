@@ -17,7 +17,7 @@ export default function Calendar({ weddingDate }: CalendarProps) {
   const lastDate = new Date(year, month + 1, 0).getDate();
   
   const days = Array.from({ length: lastDate }, (_, i) => i + 1);
-  const weeks = [];
+  const weeks: (number | null)[][] = [];
   let week = Array(7).fill(null);
 
   // 첫 주 빈 날짜 채우기

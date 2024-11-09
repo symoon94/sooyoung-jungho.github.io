@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      perspective: {
+        '1000': '1000px',
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

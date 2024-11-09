@@ -6,9 +6,6 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  env: {
-    NEXT_PUBLIC_GITHUB_TOKEN: process.env.NEXT_PUBLIC_GITHUB_TOKEN
-  },
 };
 
 export default nextConfig;

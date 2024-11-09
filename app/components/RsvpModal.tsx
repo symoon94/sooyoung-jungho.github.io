@@ -28,7 +28,7 @@ export default function RsvpModal({ isOpen, onClose }: RsvpModalProps) {
                 submittedAt: timestamp
             };
 
-            await fetch(`https://api.github.com/repos/sooyoung-jungho/sooyoung-jungho.github.io/contents/rsvp/${timestamp}.json`, {
+            var response = await fetch(`https://api.github.com/repos/sooyoung-jungho/sooyoung-jungho.github.io/contents/rsvp/${timestamp}.json`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
@@ -41,9 +41,10 @@ export default function RsvpModal({ isOpen, onClose }: RsvpModalProps) {
                 })
             });
 
-            // if (!response.ok) {
-            //     throw new Error('제출 중 오류가 발생했습니다');
-            // }
+            if (!response.ok) {
+                console.log(response);
+                throw new Error('제출 중 오류가 발생했습니다');
+            }
 
             onClose();
             alert('참석 여부가 성공적으로 전달되었습니다.');

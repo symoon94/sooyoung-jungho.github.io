@@ -78,21 +78,23 @@ export default function Home() {
           </h1>
 
           {/* 메인 사진들 */}
-          <div className="flex justify-center gap-6 mt-12 mb-12">
-            <div className="w-48 h-64 relative">
+          <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 mt-8 mb-8 sm:mt-12 sm:mb-12">
+            <div className="w-64 h-80 sm:w-48 sm:h-64 relative mx-auto">
               <Image
                 src="/gallery/sooyoung.png"
                 alt="Sooyoung Photo"
                 className="object-cover rounded-lg shadow-lg"
                 fill
+                sizes="(max-width: 768px) 256px, 192px"
               />
             </div>
-            <div className="w-48 h-64 relative">
+            <div className="w-64 h-80 sm:w-48 sm:h-64 relative mx-auto">
               <Image
                 src="/gallery/jungho.png"
                 alt="Jungho Photo"
                 className="object-cover rounded-lg shadow-lg"
                 fill
+                sizes="(max-width: 768px) 256px, 192px"
               />
             </div>
           </div>

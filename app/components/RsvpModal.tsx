@@ -105,7 +105,7 @@ export default function RsvpModal({ isOpen, onClose }: RsvpModalProps) {
                                     <button
                                         key={option.value}
                                         type="button"
-                                        className={`flex-1 py-1.5 rounded text-sm ${attendance === option.value
+                                        className={`flex-1 py-1.5 rounded text-xs ${attendance === option.value
                                             ? 'bg-[#B4A89F] text-white'
                                             : 'border hover:bg-gray-50'
                                             }`}

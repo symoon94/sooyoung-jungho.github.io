@@ -539,16 +539,16 @@ export default function Home() {
       {/* Bottom Buttons */}
       {showBottomButtons && !hideButtonsForToday && (
         <div className="fixed bottom-0 left-0 right-0 bg-white/95 shadow-lg transition-all duration-300 ease-in-out z-50 korean-text">
-          <div className="max-w-md mx-auto p-4 flex items-center justify-between">
+          <div className="max-w-md mx-auto p-3 flex items-center justify-between">
             <button
               onClick={() => setIsRsvpOpen(true)}
-              className="bg-green-800 text-white px-6 py-2 rounded-full text-sm hover:bg-green-700 transition-colors"
+              className="bg-green-800 text-white px-4 py-1.5 rounded-full text-xs hover:bg-green-700 transition-colors"
             >
               참석 여부 및 축하 메시지 전달하기
             </button>
             <button
               onClick={hideForToday}
-              className="text-gray-500 text-sm hover:text-gray-700"
+              className="text-gray-500 text-xs hover:text-gray-700"
             >
               오늘 하루 보지 않기
             </button>

@@ -25,25 +25,36 @@ export default function Map() {
 
             const map = new window.naver.maps.Map('map', mapOptions);
 
-            const marker = new window.naver.maps.Marker({
-                position: nobleValenti,
-                map: map
-            });
-
             const contentString = [
-                '<div class="iw_inner" style="padding:5px; margin: 5px 0px 5px 0px; width: 150px; height: 45px; text-align: center;">',
-                '   <p style="font-size: 1rem; margin: 0; font-weight: 500;">노블발렌티 대치</p>',
+                '<div class="iw_inner" style="padding:8px; margin: 0; width: 150px; text-align: center; display: flex; flex-direction: column; justify-content: center;">',
+                '   <p style="font-size: 1rem; margin: 0 0 4px 0; font-weight: 500;">노블발렌티 대치</p>',
                 '   <p style="font-size: 0.8rem; margin: 0;">서울 강남구 영동대로 325</p>',
                 '</div>'
             ].join('');
 
+            const markerIcon = {
+                content: `<div style="width: 30px; height: 30px; display: flex; justify-content: center; align-items: center;">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="#E11D48">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                         </div>`,
+                size: new window.naver.maps.Size(30, 30),
+                anchor: new window.naver.maps.Point(15, 15)
+            };
+
+            const marker = new window.naver.maps.Marker({
+                position: nobleValenti,
+                map: map,
+                icon: markerIcon
+            });
+
             const infowindow = new window.naver.maps.InfoWindow({
                 content: contentString,
                 maxWidth: 200,
-                height: 50,
                 backgroundColor: "white",
                 borderColor: "#ddd",
                 borderWidth: 1,
+                borderRadius: 8,
                 disableAnchor: true,
                 textAlign: "center",
                 pixelOffset: new window.naver.maps.Point(0, -5)

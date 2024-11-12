@@ -15,11 +15,11 @@ interface ContactPerson {
 
 const contacts: ContactPerson[] = [
     { role: '신랑', name: '현정호', phone: '01020371272' },
-    { role: '신랑 아버지', name: '현종권', phone: '01012345678' },
-    { role: '신랑 어머니', name: '안미향', phone: '01012345678' },
+    { role: '신랑 아버지', name: '현종권', phone: '01089601272' },
+    { role: '신랑 어머니', name: '안미향', phone: '01020021272' },
     { role: '신부', name: '문수영', phone: '01094735586' },
     { role: '신부 아버지', name: '문영환', phone: '01063184959' },
-    { role: '신부 어머니', name: '이동신', phone: '01094735586' },
+    { role: '신부 어머니', name: '이동신', phone: '01063477868' },
 ];
 
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {

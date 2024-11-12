@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import RedirectComponent from './components/RedirectComponent';
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -40,10 +41,13 @@ export default function RootLayout({
       <head>
         <meta
           httpEquiv="Content-Security-Policy"
-          content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://developers.kakao.com https://openapi.map.naver.com https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.github.com;"
+          content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://developers.kakao.com https://openapi.map.naver.com https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.github.com; frame-src 'self' https://giscus.app;"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <RedirectComponent />
+        {children}
+      </body>
     </html>
   )
 }

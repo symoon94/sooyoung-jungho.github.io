@@ -24,6 +24,11 @@ const Toaster = dynamic(
   }
 );
 
+// Add section flags at the top of the file
+const SHOW_RSVP_SECTION = false;
+const SHOW_ACCOUNT_SECTION = false;
+const SHOW_GUESTBOOK_SECTION = false;
+
 export default function Home() {
   const [titleRef, isTitleVisible] = useIntersectionObserver();
   const [dateRef, isDateVisible] = useIntersectionObserver();
@@ -442,41 +447,43 @@ export default function Home() {
         </section>
 
         {/* RSVP 섹션 */}
-        <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4">
-          <div
-            ref={rsvpRef as React.RefObject<HTMLDivElement>}
-            className={`w-full max-w-md px-4 sm:px-0 text-center space-y-8 korean-text transition-all duration-1000 transform 
-              ${isRsvpVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
-          >
-            {/* RSVP 이틀 */}
-            <div className="text-center mb-8">
-              <div className="inline-block border border-green-800 px-8 py-2 text-green-800" style={{ borderRadius: '50%', fontFamily: 'MadeKenfolg' }}>
-                R.S.V.P
-              </div>
-            </div>
-
-            {/* 제목 */}
-            <h2 className="text-2xl text-gray-800">참석여부</h2>
-
-            {/* 안내 메시지 */}
-            <div className="space-y-4 text-gray-600">
-              <p>부족함없이 식사를 제공할 수 있기 위함이니</p>
-              <p>참석에 부담 가지지 말아주시고,</p>
-              <p>편하게 알려주시면 감사합니다.</p>
-            </div>
-
-            {/* 구분선 */}
-            <div className="border-t border-gray-200 w-1/2 mx-auto my-8" />
-
-            {/* 참석여부 버튼 */}
-            <button
-              className="mt-8 bg-green-800 text-white px-8 py-3 rounded-full shadow-lg hover:bg-green-700 transition-colors"
-              onClick={() => setIsRsvpOpen(true)}
+        {SHOW_RSVP_SECTION && (
+          <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4">
+            <div
+              ref={rsvpRef as React.RefObject<HTMLDivElement>}
+              className={`w-full max-w-md px-4 sm:px-0 text-center space-y-8 korean-text transition-all duration-1000 transform 
+                ${isRsvpVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
             >
-              참석여부 전달하기
-            </button>
-          </div>
-        </section>
+              {/* RSVP 이틀 */}
+              <div className="text-center mb-8">
+                <div className="inline-block border border-green-800 px-8 py-2 text-green-800" style={{ borderRadius: '50%', fontFamily: 'MadeKenfolg' }}>
+                  R.S.V.P
+                </div>
+              </div>
+
+              {/* 제목 */}
+              <h2 className="text-2xl text-gray-800">참석여부</h2>
+
+              {/* 안내 메시지 */}
+              <div className="space-y-4 text-gray-600">
+                <p>부족함없이 식사를 제공할 수 있기 위함이니</p>
+                <p>참석에 부담 가지지 말아주시고,</p>
+                <p>편하게 알려주시면 감사합니다.</p>
+              </div>
+
+              {/* 구분선 */}
+              <div className="border-t border-gray-200 w-1/2 mx-auto my-8" />
+
+              {/* 참석여부 버튼 */}
+              <button
+                className="mt-8 bg-green-800 text-white px-8 py-3 rounded-full shadow-lg hover:bg-green-700 transition-colors"
+                onClick={() => setIsRsvpOpen(true)}
+              >
+                참석여부 전달하기
+              </button>
+            </div>
+          </section>
+        )}
 
         {/* 오시는 길 섹션 */}
         <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4 korean-text">
@@ -505,30 +512,34 @@ export default function Home() {
         />
 
 
-        {/* 방명록 섹션 - Add id */}
-        <section id="guestbook-section" className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4">
-          <Guestbook />
-        </section>
+        {/* 방명록 섹션 */}
+        {SHOW_GUESTBOOK_SECTION && (
+          <section id="guestbook-section" className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4">
+            <Guestbook />
+          </section>
+        )}
 
         {/* 마음 전하실 곳 섹션 */}
-        <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4 korean-text">
-          <div className="w-full max-w-md px-4 sm:px-0 text-center">
-            {/* 안내 메시지 */}
-            <h2 className="text-xl font-medium text-center mb-8 text-gray-800">
-              마음 전해주실 곳
-            </h2>
-            <div className="text-gray-600 mb-8 italic text-balance space-y-4">
-              <p>&ldquo;필요하신 분들을 위해</p>
-              <p>안내드리니 양해 부탁드립니다.</p>
-              <p>참석하지 못하시더라도 축하해주시는</p>
-              <p>그 마음 감사히 간직하겠습니다.&rdquo;</p>
+        {SHOW_ACCOUNT_SECTION && (
+          <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4 korean-text">
+            <div className="w-full max-w-md px-4 sm:px-0 text-center">
+              {/* 안내 메시지 */}
+              <h2 className="text-xl font-medium text-center mb-8 text-gray-800">
+                마음 전해주실 곳
+              </h2>
+              <div className="text-gray-600 mb-8 italic text-balance space-y-4">
+                <p>&ldquo;필요하신 분들을 위해</p>
+                <p>안내드리니 양해 부탁드립니다.</p>
+                <p>참석하지 못하시더라도 축하해주시는</p>
+                <p>그 마음 감사히 간직하겠습니다.&rdquo;</p>
+              </div>
+
+
+              {/* 계좌 정보 */}
+              <AccountInfo />
             </div>
-
-
-            {/* 계좌 정보 */}
-            <AccountInfo />
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* 공유하기 섹션 추가 */}
         <section className="relative z-10 w-full flex flex-col items-center justify-center p-8 sm:p-4 mb-16">
@@ -536,8 +547,8 @@ export default function Home() {
         </section>
       </main>
 
-      {/* Bottom Buttons */}
-      {showBottomButtons && !hideButtonsForToday && (
+      {/* Bottom Buttons - Only show if RSVP section is enabled */}
+      {SHOW_RSVP_SECTION && showBottomButtons && !hideButtonsForToday && (
         <div className="fixed bottom-0 left-0 right-0 bg-white/95 shadow-lg transition-all duration-300 ease-in-out z-50 korean-text">
           <div className="max-w-md mx-auto p-3 flex items-center justify-between">
             <button
@@ -556,13 +567,14 @@ export default function Home() {
         </div>
       )}
 
+      {/* RSVP Modal - Only include if RSVP section is enabled */}
+      {SHOW_RSVP_SECTION && (
+        <RsvpModal
+          isOpen={isRsvpOpen}
+          onClose={() => setIsRsvpOpen(false)}
+        />
+      )}
 
-      <RsvpModal
-        isOpen={isRsvpOpen}
-        onClose={() => setIsRsvpOpen(false)}
-      />
-
-      {/* Toaster */}
       <Toaster position="bottom-center" />
     </>
   );

@@ -28,7 +28,7 @@ export default function Map() {
             const contentString = [
                 '<div class="iw_inner" style="padding:8px; margin: 0; width: 150px; text-align: center; display: flex; flex-direction: column; justify-content: center;">',
                 '   <p style="font-size: 1rem; margin: 0 0 4px 0; font-weight: 500;">노블발렌티 대치</p>',
-                '   <p style="font-size: 0.8rem; margin: 0;">서울 강남구 영동대로 325</p>',
+                '   <p style="font-size: 0.7rem; margin: 0;">서울 강남구 영동대로 325</p>',
                 '</div>'
             ].join('');
 

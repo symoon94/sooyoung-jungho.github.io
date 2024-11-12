@@ -166,7 +166,7 @@ export default function Home() {
               }`}
           >
             {/* 상단 날짜 */}
-            <div className="inline-block border border-green-800 sm:px-2 py-1 mb-4 sm:mb-8 text-green-800 text-sm sm:text-base font-serif"
+            <div className="inline-block border border-green-800 sm:px-4 px-3 py-2 mb-4 sm:mb-8 text-green-800 text-sm sm:text-base font-serif"
               style={{ borderRadius: '50%' }}>
               <span className="font-bold">2025 </span>
               <span className="font-bold">02 </span>
@@ -215,7 +215,7 @@ export default function Home() {
 
             {/* Invitation 원형 */}
             <div className="mt-4 sm:mt-6 lg:mt-8">
-              <div className="inline-block border border-green-800 px-4 sm:px-2 py-1 text-green-800 text-sm sm:text-base font-serif"
+              <div className="inline-block border border-green-800 sm:px-4 px-3 py-2 text-green-800 text-sm sm:text-base font-serif"
                 style={{ borderRadius: '50%' }}>
                 invitation
               </div>
@@ -280,11 +280,11 @@ export default function Home() {
 
             {/* 혼주 정보 */}
             <div className="text-center space-y-2 text-gray-700 mt-16 korean-text">
-              <div className="flex justify-between max-w-[280px] mx-auto">
+              <div className="flex justify-between max-w-[220px] mx-auto">
                 <span>현종권 · 안미향 의 아들</span>
                 <span className="w-[60px]">정호</span>
               </div>
-              <div className="flex justify-between max-w-[280px] mx-auto">
+              <div className="flex justify-between max-w-[220px] mx-auto">
                 <span>문영환 · 이동신 의 딸</span>
                 <span className="w-[60px]">수영</span>
               </div>

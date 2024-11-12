@@ -37,6 +37,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
+      <head>
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://developers.kakao.com https://openapi.map.naver.com https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.github.com;"
+        />
+      </head>
       <body>{children}</body>
     </html>
   )

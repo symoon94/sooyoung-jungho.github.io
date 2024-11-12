@@ -8,9 +8,7 @@ const nextConfig = {
   },
   env: {
     NEXT_PUBLIC_GITHUB_TOKEN: process.env.GITHUB_TOKEN
-  },
-  skipTrailingSlashRedirect: true,
-  skipMiddlewareUrlNormalize: true,
+  }
 };
 
 export default nextConfig;

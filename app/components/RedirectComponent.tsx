@@ -6,18 +6,10 @@ export default function RedirectComponent() {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const hostname = window.location.hostname;
-            if (hostname === 'sooyoung-jungho.github.io') {
-                // 즉시 리다이렉션을 위해 document.write 사용
-                document.write(`
-          <html>
-            <head>
-              <meta http-equiv="refresh" content="0; url=https://sooyoung-jungho.netlify.app${window.location.pathname}">
-            </head>
-            <body>
-              <p></p>
-            </body>
-          </html>
-        `);
+            if (hostname.includes('github.io')) {
+                // 모든 리소스 로딩을 중단하고 즉시 리다이렉트
+                window.stop();
+                window.location.replace('https://sooyoung-jungho.netlify.app' + window.location.pathname);
             }
         }
     }, []);

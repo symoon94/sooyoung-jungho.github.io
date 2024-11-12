@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 export default function KakaoPayButton({ href }: { href: string }) {
     return (
         <a
@@ -11,9 +13,11 @@ export default function KakaoPayButton({ href }: { href: string }) {
                 alignItems: 'center'
             }}
         >
-            <img
+            <Image
                 src="/kpbtn.svg"
                 alt="카카오페이 송금"
+                width={26}
+                height={26}
                 className="h-full w-auto"
                 style={{ verticalAlign: 'middle' }}
             />

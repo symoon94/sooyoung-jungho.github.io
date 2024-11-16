@@ -17,6 +17,12 @@ export default function RsvpModal({ isOpen, onClose }: RsvpModalProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        if (attendance === '참석' && (!attendeeCount || attendeeCount < 1)) {
+            alert('참석 인원은 최소 1명 이상이어야 합니다.');
+            return;
+        }
+
         try {
             const content = {
                 name,
@@ -115,7 +121,15 @@ export default function RsvpModal({ isOpen, onClose }: RsvpModalProps) {
                                     min="1"
                                     max="50"
                                     value={attendeeCount}
-                                    onChange={(e) => setAttendeeCount(Math.max(1, parseInt(e.target.value) || 1))}
+                                    onChange={(e) => {
+                                        const value = e.target.value === '' ? '' : parseInt(e.target.value);
+                                        setAttendeeCount(value as number);
+                                    }}
+                                    onBlur={() => {
+                                        if (!attendeeCount || attendeeCount < 1) {
+                                            setAttendeeCount(1);
+                                        }
+                                    }}
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm p-2"
                                 />
                             </div>

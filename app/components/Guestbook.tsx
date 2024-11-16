@@ -14,13 +14,13 @@ export default function Guestbook() {
     const maskName = (name: string) => {
         if (name.length === 1) return name;
         if (name.length === 2) return name[0] + '*';
-        
+
         const maskLength = Math.floor(name.length / 3);
         const maskStart = Math.floor((name.length - maskLength) / 2);
-        
+
         return (
-            name.slice(0, maskStart) + 
-            '*'.repeat(maskLength) + 
+            name.slice(0, maskStart) +
+            '*'.repeat(maskLength) +
             name.slice(maskStart + maskLength)
         );
     };
@@ -77,7 +77,7 @@ export default function Guestbook() {
                         className="bg-white/80 rounded-lg p-6 shadow-sm border border-green-800/10"
                     >
                         <div className="flex justify-between items-center mb-2">
-                            <span className="font-serif text-green-800">{maskName(entry.name)}</span>
+                            <span className="text-green-800">{entry.name}</span>
                             <span className="text-xs text-gray-500">
                                 {new Date(entry.submittedAt).toLocaleDateString()}
                             </span>

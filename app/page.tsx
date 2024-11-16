@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 import AccountInfo from './components/AccountInfo';
 import ContactModal from './components/ContactModal';
@@ -57,6 +57,137 @@ export default function Home() {
   const [locationRef, isLocationVisible] = useIntersectionObserver();
   const [guestbookRef, isGuestbookVisible] = useIntersectionObserver();
   const [accountRef, isAccountVisible] = useIntersectionObserver();
+
+  const sectionRefs = useRef<Array<HTMLElement | null>>([]);
+  const [currentSection, setCurrentSection] = useState(0);
+  const [isScrolling, setIsScrolling] = useState(false);
+
+  useEffect(() => {
+    const sections = document.querySelectorAll('section');
+    sectionRefs.current = Array.from(sections);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !isScrolling) {
+            const index = sectionRefs.current.findIndex((ref) => ref === entry.target);
+            setCurrentSection(index);
+          }
+        });
+      },
+      {
+        threshold: 0.7, // 섹션이 70% 이상 보일 때 활성화
+        root: document.querySelector('main')
+      }
+    );
+
+    sectionRefs.current.forEach((section) => {
+      if (section) observer.observe(section);
+    });
+
+    return () => {
+      sectionRefs.current.forEach((section) => {
+        if (section) observer.unobserve(section);
+      });
+    };
+  }, [isScrolling]);
+
+  const scrollToSection = useCallback((index: number) => {
+    setIsScrolling(true);
+    const section = sectionRefs.current[index];
+    if (section) {
+      const mainElement = document.querySelector('main');
+      if (mainElement) {
+        mainElement.scrollTo({
+          top: section.offsetTop,
+          behavior: 'smooth'
+        });
+      }
+    }
+    // 스크롤 애니메이션이 끝난 후 isScrolling 상태 해제
+    setTimeout(() => setIsScrolling(false), 1000);
+  }, []);
+
+  const handleWheel = useCallback((e: WheelEvent) => {
+    const currentSectionElement = sectionRefs.current[currentSection];
+    if (!currentSectionElement) return;
+
+    const { scrollHeight, clientHeight, scrollTop } = currentSectionElement;
+    const isAtTop = scrollTop === 0;
+    const isAtBottom = Math.abs(scrollHeight - scrollTop - clientHeight) < 1;
+
+    // 현재 섹션이 스크롤 가능하고 끝까지 스크롤되지 않았다면 기본 스크롤 동작 허용
+    if (scrollHeight > clientHeight) {
+      if ((e.deltaY > 0 && !isAtBottom) || (e.deltaY < 0 && !isAtTop)) {
+        return;
+      }
+    }
+
+    // 섹션 전환이 필요한 경우에만 기본 동작 방지
+    e.preventDefault();
+    if (isScrolling) return;
+
+    const direction = e.deltaY > 0 ? 1 : -1;
+    const nextSection = currentSection + direction;
+
+    if (nextSection >= 0 && nextSection < sectionRefs.current.length) {
+      scrollToSection(nextSection);
+    }
+  }, [currentSection, isScrolling, scrollToSection]);
+
+  useEffect(() => {
+    const mainElement = document.querySelector('main');
+    if (mainElement) {
+      mainElement.addEventListener('wheel', handleWheel, { passive: false });
+      return () => mainElement.removeEventListener('wheel', handleWheel);
+    }
+  }, [handleWheel]);
+
+  // Touch events for mobile
+  const touchStartY = useRef(0);
+
+  const handleTouchStart = useCallback((e: TouchEvent) => {
+    touchStartY.current = e.touches[0].clientY;
+  }, []);
+
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    const currentSectionElement = sectionRefs.current[currentSection];
+    if (!currentSectionElement) return;
+
+    const { scrollHeight, clientHeight, scrollTop } = currentSectionElement;
+    const isAtTop = scrollTop === 0;
+    const isAtBottom = Math.abs(scrollHeight - scrollTop - clientHeight) < 1;
+
+    // 현재 섹션이 스크롤 가능하고 끝까지 스크롤되지 않았다면 기본 스크롤 동작 허용
+    if (scrollHeight > clientHeight) {
+      if ((e.touches[0].clientY > touchStartY.current && !isAtBottom) || (e.touches[0].clientY < touchStartY.current && !isAtTop)) {
+        return;
+      }
+    }
+
+    // 섹션 전환이 필요한 경우에만 기본 동작 방지
+    e.preventDefault();
+    if (isScrolling) return;
+
+    const direction = e.touches[0].clientY > touchStartY.current ? 1 : -1;
+    const nextSection = currentSection + direction;
+
+    if (nextSection >= 0 && nextSection < sectionRefs.current.length) {
+      scrollToSection(nextSection);
+    }
+  }, [currentSection, isScrolling, scrollToSection]);
+
+  useEffect(() => {
+    const mainElement = document.querySelector('main');
+    if (mainElement) {
+      mainElement.addEventListener('touchstart', handleTouchStart);
+      mainElement.addEventListener('touchmove', handleTouchMove);
+      return () => {
+        mainElement.removeEventListener('touchstart', handleTouchStart);
+        mainElement.removeEventListener('touchmove', handleTouchMove);
+      };
+    }
+  }, [handleTouchStart, handleTouchMove]);
 
   const handleScroll = useCallback((e: Event) => {
     const target = e.target as HTMLElement;
@@ -147,7 +278,7 @@ export default function Home() {
   return (
     <>
       <main
-        className="relative h-screen overflow-x-hidden overflow-y-scroll"
+        className="relative h-screen overflow-x-hidden overflow-y-scroll snap-y snap-mandatory"
         style={{
           backgroundImage: 'url(/paper.jpg)',
           backgroundRepeat: 'repeat',
@@ -159,7 +290,7 @@ export default function Home() {
         <Snowfall />
 
         {/* 첫 번째 섹션 */}
-        <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4">
+        <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4 snap-start">
           <div
             ref={titleRef as React.RefObject<HTMLDivElement>}
             className={`w-full max-w-4xl mx-auto text-center transition-opacity duration-1000 ${isTitleVisible ? 'opacity-100' : 'opacity-0'
@@ -224,7 +355,7 @@ export default function Home() {
         </section>
 
         {/* 두 번째 페이지: 메시지 */}
-        <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4">
+        <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4 snap-start">
           <div
             ref={messageRef as React.RefObject<HTMLDivElement>}
             className={`w-full max-w-md text-center transition-opacity duration-1000 ${isMessageVisible ? 'opacity-100' : 'opacity-0'}`}
@@ -314,7 +445,7 @@ export default function Home() {
 
 
         {/* 갤러리 섹션 */}
-        <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4">
+        <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4 snap-start">
           <div
             ref={galleryRef as React.RefObject<HTMLDivElement>}
             className={`w-full max-w-md px-4 sm:px-0 transition-all duration-1000 transform 
@@ -325,7 +456,7 @@ export default function Home() {
         </section>
 
         {/* 캘린더 섹션 (3번째 페이지) */}
-        <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4">
+        <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4 snap-start">
           <div
             ref={calendarRef as React.RefObject<HTMLDivElement>}
             className={`w-full max-w-md px-4 sm:px-0 transition-all duration-1000 transform 
@@ -448,7 +579,7 @@ export default function Home() {
 
         {/* RSVP 섹션 */}
         {SHOW_RSVP_SECTION && (
-          <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4">
+          <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4 snap-start">
             <div
               ref={rsvpRef as React.RefObject<HTMLDivElement>}
               className={`w-full max-w-md px-4 sm:px-0 text-center space-y-8 korean-text transition-all duration-1000 transform 
@@ -486,7 +617,7 @@ export default function Home() {
         )}
 
         {/* 오시는 길 섹션 */}
-        <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4 korean-text">
+        <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4 korean-text snap-start">
           <div className="w-full max-w-md mx-auto">
             {/* Location 타이틀 */}
             <div className="text-center mb-8">
@@ -514,14 +645,14 @@ export default function Home() {
 
         {/* 방명록 섹션 */}
         {SHOW_GUESTBOOK_SECTION && (
-          <section id="guestbook-section" className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4">
+          <section id="guestbook-section" className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4 snap-start">
             <Guestbook />
           </section>
         )}
 
         {/* 마음 전하실 곳 섹션 */}
         {SHOW_ACCOUNT_SECTION && (
-          <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4 korean-text">
+          <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4 korean-text snap-start">
             <div className="w-full max-w-md px-4 sm:px-0 text-center">
               {/* 안내 메시지 */}
               <h2 className="text-xl font-medium text-center mb-8 text-gray-800">
@@ -542,7 +673,7 @@ export default function Home() {
         )}
 
         {/* 공유하기 섹션 추가 */}
-        <section className="relative z-10 w-full flex flex-col items-center justify-center p-8 sm:p-4 mb-16">
+        <section className="relative z-10 w-full flex flex-col items-center justify-center p-8 sm:p-4 mb-16 snap-start">
           <ShareButtons />
         </section>
       </main>

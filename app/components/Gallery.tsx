@@ -1,72 +1,80 @@
 'use client';
-import { useState } from 'react';
 import Image from 'next/image';
+import { createPortal } from 'react-dom';
 
-interface Photo {
-    id: number;
-    src: string;
-    alt: string;
+export interface GalleryProps {
+    selectedImage: number | null;
+    setSelectedImage: (index: number | null) => void;
 }
 
-export default function Gallery() {
-    const photos: Photo[] = [
-        { id: 1, src: '/gallery/photo1.jpg', alt: '우리의 순간 1' },
-        { id: 2, src: '/gallery/photo2.jpg', alt: '우리의 순간 2' },
-        { id: 3, src: '/gallery/photo3.jpg', alt: '우리의 순간 3' },
+export default function Gallery({ selectedImage, setSelectedImage }: GalleryProps) {
+    const images = [
+        '/gallery/photo1.jpg',
+        '/gallery/photo2.jpg',
+        '/gallery/photo3.jpg',
     ];
 
-    const [currentPhoto, setCurrentPhoto] = useState(0);
-
     return (
-        <div className="w-full max-w-md mx-auto">
-            {/* Gallery 타이틀 */}
-            <div className="text-center mb-8">
-                <div className="inline-block border border-green-800 px-8 py-2 text-green-800 italic" style={{ borderRadius: '50%', fontFamily: 'MadeKenfolg' }}>
-                    gallery
+        <>
+            <div className="w-full relative">
+                {/* Gallery 타이틀 */}
+                <div className="text-center mb-8">
+                    <div
+                        className="inline-block border border-green-800 px-8 py-2 text-green-800"
+                        style={{ borderRadius: '50%', fontFamily: 'MadeKenfolg' }}
+                    >
+                        gallery
+                    </div>
+                </div>
+
+                {/* 이미지 그리드 */}
+                <div className="relative grid grid-cols-3 gap-2">
+                    {images.map((src, index) => (
+                        <div
+                            key={index}
+                            className="aspect-square relative cursor-pointer hover:opacity-90 transition-opacity"
+                            onClick={() => setSelectedImage(index)}
+                        >
+                            <Image
+                                src={src}
+                                alt={`Gallery image ${index + 1}`}
+                                fill
+                                className="object-cover rounded-lg"
+                                sizes="(max-width: 768px) 33vw, 200px"
+                            />
+                        </div>
+                    ))}
                 </div>
             </div>
 
-            {/* 메인 이미지 */}
-            <div className="mb-4 relative w-full h-[500px]">
-                <Image
-                    src={photos[currentPhoto].src}
-                    alt={photos[currentPhoto].alt}
-                    fill
-                    className="object-cover rounded-lg"
-                    style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
-                    draggable="false"
-                    sizes="(max-width: 768px) 100vw, 768px"
-                />
-            </div>
-
-            {/* 썸네일 슬라이더 */}
-            <div className="flex justify-center items-center gap-2 relative">
-                <button
-                    className="absolute left-0 text-gray-400 text-4xl hover:text-gray-600 transition-colors"
-                    onClick={() => setCurrentPhoto(prev => (prev > 0 ? prev - 1 : photos.length - 1))}
+            {/* 선택된 이미지 모달 */}
+            {selectedImage !== null && typeof window !== 'undefined' && createPortal(
+                <div
+                    className="fixed inset-0 bg-black/75 z-[999] flex items-center justify-center"
+                    onClick={() => setSelectedImage(null)}
                 >
-                    ‹
-                </button>
-                {photos.map((photo, index) => (
-                    <div key={photo.id} className="w-16 h-16 bg-gray-200 rounded-lg cursor-pointer relative" onClick={() => setCurrentPhoto(index)}>
+                    <div className="relative w-[80%] max-w-lg aspect-square p-4">
                         <Image
-                            src={photo.src}
-                            alt={photo.alt}
+                            src={images[selectedImage]}
+                            alt={`Gallery image ${selectedImage + 1}`}
                             fill
-                            className="object-cover rounded-lg"
-                            style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
-                            draggable="false"
-                            sizes="64px"
+                            className="object-contain rounded-lg"
+                            sizes="(max-width: 768px) 80vw, 500px"
                         />
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedImage(null);
+                            }}
+                            className="absolute -top-10 right-0 w-8 h-8 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+                            aria-label="Close modal"
+                        >
+                            ×
+                        </button>
                     </div>
-                ))}
-                <button
-                    className="absolute right-0 text-gray-400 text-4xl hover:text-gray-600 transition-colors"
-                    onClick={() => setCurrentPhoto(prev => (prev < photos.length - 1 ? prev + 1 : 0))}
-                >
-                    ›
-                </button>
-            </div>
-        </div>
+                </div>,
+                document.body
+            )}
+        </>
     );
 } 

@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { useCallback, useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 import AccountInfo from './components/AccountInfo';
 import ContactModal from './components/ContactModal';
@@ -61,6 +61,7 @@ export default function Home() {
   const sectionRefs = useRef<Array<HTMLElement | null>>([]);
   const [currentSection, setCurrentSection] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
   useEffect(() => {
     const sections = document.querySelectorAll('section');
@@ -278,7 +279,7 @@ export default function Home() {
   return (
     <>
       <main
-        className="relative h-screen overflow-x-hidden overflow-y-scroll snap-y snap-mandatory"
+        className="relative h-screen overflow-x-hidden overflow-y-auto"
         style={{
           backgroundImage: 'url(/paper.jpg)',
           backgroundRepeat: 'repeat',
@@ -448,10 +449,13 @@ export default function Home() {
         <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center p-8 sm:p-4 snap-start">
           <div
             ref={galleryRef as React.RefObject<HTMLDivElement>}
-            className={`w-full max-w-md px-4 sm:px-0 transition-all duration-1000 transform 
+            className={`w-full max-w-md px-4 sm:px-0 transition-all duration-1000 transform relative
               ${isGalleryVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
           >
-            <Gallery />
+            <Gallery
+              selectedImage={selectedImage}
+              setSelectedImage={setSelectedImage}
+            />
           </div>
         </section>
 

@@ -6,9 +6,11 @@ import { useState } from 'react';
 interface RsvpModalProps {
     isOpen: boolean;
     onClose: () => void;
+    showHideForToday?: boolean;
+    onHideForToday?: () => void;
 }
 
-export default function RsvpModal({ isOpen, onClose }: RsvpModalProps) {
+export default function RsvpModal({ isOpen, onClose, showHideForToday, onHideForToday }: RsvpModalProps) {
     const [activeTab, setActiveTab] = useState('신랑');
     const [attendance, setAttendance] = useState<'참석' | '미정' | '미참'>('참석');
     const [attendeeCount, setAttendeeCount] = useState(1);
@@ -17,7 +19,7 @@ export default function RsvpModal({ isOpen, onClose }: RsvpModalProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         if (attendance === '참석' && (!attendeeCount || attendeeCount < 1)) {
             alert('참석 인원은 최소 1명 이상이어야 합니다.');
             return;
@@ -41,12 +43,19 @@ export default function RsvpModal({ isOpen, onClose }: RsvpModalProps) {
                 throw new Error('제출 중 오류가 발생했습니다');
             }
 
+            localStorage.setItem('rsvpSubmitted', 'true');
+
             onClose();
             alert('참석 여부가 성공적으로 전달되었습니다.');
         } catch (error) {
             console.error('Error:', error);
             alert('제출 중 오류가 발생했습니다.');
         }
+    };
+
+    const handleHideForToday = () => {
+        onHideForToday?.();
+        onClose();
     };
 
     return (
@@ -146,24 +155,37 @@ export default function RsvpModal({ isOpen, onClose }: RsvpModalProps) {
                             />
                         </div>
 
-                        <div className="flex justify-end space-x-2 pt-4">
-                            <button
-                                type="button"
-                                onClick={onClose}
-                                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
-                            >
-                                닫기
-                            </button>
-                            <button
-                                type="submit"
-                                disabled={!name.trim()}
-                                className={`px-4 py-2 text-sm font-medium rounded-md ${name.trim()
-                                    ? 'bg-[#B4A89F] text-white hover:bg-[#a39689]'
-                                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                    }`}
-                            >
-                                제출하기
-                            </button>
+                        <div className="flex justify-between space-x-2 pt-4">
+                            {showHideForToday ? (
+                                <button
+                                    type="button"
+                                    onClick={handleHideForToday}
+                                    className="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700"
+                                >
+                                    오늘 하루 보지 않기
+                                </button>
+                            ) : (
+                                <div></div>
+                            )}
+                            <div className="flex space-x-2">
+                                <button
+                                    type="button"
+                                    onClick={onClose}
+                                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                                >
+                                    닫기
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={!name.trim()}
+                                    className={`px-4 py-2 text-sm font-medium rounded-md ${name.trim()
+                                        ? 'bg-[#B4A89F] text-white hover:bg-[#a39689]'
+                                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                        }`}
+                                >
+                                    제출하기
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </Dialog.Panel>

@@ -192,12 +192,17 @@ export default function Home() {
 
   const handleScroll = useCallback((e: Event) => {
     const target = e.target as HTMLElement;
-    const guestbookSection = document.getElementById('guestbook-section');
+    const lastSection = document.querySelector('section:last-of-type');
 
-    if (!guestbookSection || hideButtonsForToday) return;
+    if (!lastSection || hideButtonsForToday) return;
 
-    const guestbookPosition = guestbookSection.getBoundingClientRect();
-    setShowBottomButtons(guestbookPosition.top <= window.innerHeight);
+    const lastSectionPosition = lastSection.getBoundingClientRect();
+    if (lastSectionPosition.bottom <= window.innerHeight + 100) {
+      setIsRsvpOpen(true);
+      setShowBottomButtons(true);
+    } else {
+      setShowBottomButtons(false);
+    }
   }, [hideButtonsForToday]);
 
   useEffect(() => {
@@ -267,6 +272,14 @@ export default function Home() {
     setHideButtonsForToday(true);
     setShowBottomButtons(false);
   };
+
+  useEffect(() => {
+    // RSVP 제출 여부 확인
+    const hasSubmittedRsvp = localStorage.getItem('rsvpSubmitted') === 'true';
+    if (hasSubmittedRsvp) {
+      setHideButtonsForToday(true);
+    }
+  }, []);
 
   if (!mounted) {
     return (
@@ -682,31 +695,13 @@ export default function Home() {
         </section>
       </main>
 
-      {/* Bottom Buttons - Only show if RSVP section is enabled */}
-      {SHOW_RSVP_SECTION && showBottomButtons && !hideButtonsForToday && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white/95 shadow-lg transition-all duration-300 ease-in-out z-50 korean-text">
-          <div className="max-w-md mx-auto p-3 flex items-center justify-between">
-            <button
-              onClick={() => setIsRsvpOpen(true)}
-              className="bg-green-800 text-white px-4 py-1.5 rounded-full text-xs hover:bg-green-700 transition-colors"
-            >
-              참석 여부 및 축하 메시지 전달하기
-            </button>
-            <button
-              onClick={hideForToday}
-              className="text-gray-500 text-xs hover:text-gray-700"
-            >
-              오늘 하루 보지 않기
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* RSVP Modal - Only include if RSVP section is enabled */}
       {SHOW_RSVP_SECTION && (
         <RsvpModal
           isOpen={isRsvpOpen}
           onClose={() => setIsRsvpOpen(false)}
+          showHideForToday={showBottomButtons}
+          onHideForToday={hideForToday}
         />
       )}
 

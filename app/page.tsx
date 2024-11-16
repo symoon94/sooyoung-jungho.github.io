@@ -271,7 +271,7 @@ export default function Home() {
   if (!mounted) {
     return (
       <main className="h-screen flex items-center justify-center">
-        <div className="text-green-800">Loading...</div>
+        <div className="text-green-800"></div>
       </main>
     );
   }

@@ -1,109 +1,184 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-
-// 인트로 애니메이션 플래그
-const SHOW_INTRO_ANIMATION = true;
+import { useEffect, useState } from 'react';
 
 export default function RedirectComponent() {
     const [shouldRedirect, setShouldRedirect] = useState(false);
     const [showText, setShowText] = useState(false);
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-    const animationRef = useRef<number>();
+    const [fadeOut, setFadeOut] = useState(false);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const hostname = window.location.hostname;
-            if (hostname.includes('github.io') || (hostname === 'localhost' && SHOW_INTRO_ANIMATION)) {
+            if (hostname.includes('localhost')) {
                 setShouldRedirect(true);
+                setTimeout(() => setShowText(true), 100);
 
-                const canvas = canvasRef.current;
-                if (!canvas) return;
-                const ctx = canvas.getContext('2d');
-                if (!ctx) return;
-
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-
-                const centerX = canvas.width / 2;
-                const centerY = canvas.height / 2;
-                const text = "Sooyoung♥Jungho";
-
-                const initialLetters = text.split('').map((char, index) => ({
-                    char,
-                    x: centerX + (Math.random() - 0.5) * canvas.width,
-                    y: centerY + (Math.random() - 0.5) * canvas.height,
-                    targetX: centerX - (text.length * 20 / 2) + (index * 20),
-                    targetY: centerY,
-                    speed: 0.05
-                }));
-
-                const animate = () => {
-                    if (!ctx) return;
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                    ctx.font = "bold 3rem MadeKenfolg";
-                    ctx.fillStyle = '#ffffff';
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-
-                    initialLetters.forEach(letter => {
-                        letter.x += (letter.targetX - letter.x) * letter.speed;
-                        letter.y += (letter.targetY - letter.y) * letter.speed;
-                        ctx.fillText(letter.char, letter.x, letter.y);
-                    });
-
-                    animationRef.current = requestAnimationFrame(animate);
-                };
-
-                animate();
+                setTimeout(() => setFadeOut(true), 1500);
 
                 setTimeout(() => {
-                    if (hostname.includes('github.io')) {
-                        window.location.replace('https://sooyoung-jungho-wedding.netlify.app' + window.location.pathname);
-                    } else {
-                        setShowText(true);
-                        setTimeout(() => {
-                            setShouldRedirect(false);
-                        }, 500); // 페이드 아웃을 위한 지연
-                    }
+                    window.location.replace('https://sooyoung-jungho-wedding.netlify.app' + window.location.pathname);
                 }, 2000);
-
-                return () => {
-                    if (animationRef.current) {
-                        cancelAnimationFrame(animationRef.current);
-                    }
-                };
             }
         }
     }, []);
 
     if (shouldRedirect) {
         return (
-            <div
-                style={{
-                    position: 'fixed',
-                    inset: 0,
-                    background: 'linear-gradient(-45deg, #0a2815, #1a4031, #204c3d, #2d5c46)',
-                    backgroundSize: '400% 400%',
-                    zIndex: 9999,
-                    animation: 'gradient 3s ease infinite',
-                    opacity: showText ? 0 : 1,
-                    transition: 'opacity 0.5s ease-out'
-                }}
-            >
-                <canvas
-                    ref={canvasRef}
+            <>
+                <div
                     style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        pointerEvents: 'none'
+                        position: 'fixed',
+                        inset: 0,
+                        background: 'linear-gradient(-45deg, #1a472a, #2d6a4f, #40916c, #52b788)',
+                        backgroundSize: '400% 400%',
+                        zIndex: 9999,
+                        animation: 'gradient 3s ease infinite',
+                    }}
+                >
+                    <style jsx>{`
+                        @keyframes gradient {
+                            0% {
+                                background-position: 0% 50%;
+                            }
+                            50% {
+                                background-position: 100% 50%;
+                            }
+                            100% {
+                                background-position: 0% 50%;
+                            }
+                        }
+                        @keyframes fadeIn {
+                            from {
+                                opacity: 0;
+                                transform: translateY(20px);
+                            }
+                            to {
+                                opacity: 1;
+                                transform: translateY(0);
+                            }
+                        }
+                        @keyframes wave {
+                            0% { transform: translateY(0) rotate(0deg); }
+                            25% { transform: translateY(-15px) rotate(2deg); }
+                            50% { transform: translateY(0) rotate(0deg); }
+                            75% { transform: translateY(-15px) rotate(-2deg); }
+                            100% { transform: translateY(0) rotate(0deg); }
+                        }
+                        @keyframes starFall {
+                            0% {
+                                transform: translateY(-10vh) translateX(0);
+                                opacity: 1;
+                            }
+                            100% {
+                                transform: translateY(110vh) translateX(20px);
+                                opacity: 0;
+                            }
+                        }
+                        .star {
+                            position: absolute;
+                            width: 2px;
+                            height: 2px;
+                            background: white;
+                            border-radius: 50%;
+                            animation: starFall linear infinite;
+                        }
+                        .star::after {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background: white;
+                            border-radius: 50%;
+                            filter: blur(1px);
+                        }
+                        @keyframes fadeToWhite {
+                            0% {
+                                opacity: 0;
+                            }
+                            100% {
+                                opacity: 1;
+                            }
+                        }
+                    `}</style>
+                    <div
+                        style={{
+                            position: 'absolute',
+                            inset: 0,
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            maskImage: 'linear-gradient(to bottom, transparent, black 50%, transparent)',
+                            WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 50%, transparent)',
+                            animation: 'wave 8s ease-in-out infinite',
+                            transform: 'translateY(0)',
+                            pointerEvents: 'none'
+                        }}
+                    />
+                    <div
+                        style={{
+                            position: 'absolute',
+                            inset: 0,
+                            background: 'rgba(255, 255, 255, 0.05)',
+                            maskImage: 'linear-gradient(to bottom, transparent, black 50%, transparent)',
+                            WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 50%, transparent)',
+                            animation: 'wave 10s ease-in-out infinite',
+                            transform: 'translateY(0)',
+                            pointerEvents: 'none'
+                        }}
+                    />
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '0',
+                            right: '0',
+                            transform: 'translateY(-50%)',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            textAlign: 'center',
+                            color: 'white',
+                            opacity: showText ? 1 : 0,
+                            animation: showText ? 'fadeIn 1s ease-out' : 'none',
+                            fontFamily: 'MadeKenfolg, serif',
+                            fontSize: '2rem',
+                        }}
+                    >
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '1rem'
+                        }}>
+                            <span>Sooyoung</span>
+                            <span>♥</span>
+                            <span>Jungho</span>
+                        </div>
+                    </div>
+                    {[...Array(20)].map((_, i) => (
+                        <div
+                            key={i}
+                            className="star"
+                            style={{
+                                left: `${Math.random() * 100}%`,
+                                animationDuration: `${Math.random() * 2 + 2}s`,
+                                animationDelay: `${Math.random() * 3}s`,
+                                opacity: Math.random() * 0.8 + 0.2
+                            }}
+                        />
+                    ))}
+                </div>
+                <div
+                    style={{
+                        position: 'fixed',
+                        inset: 0,
+                        background: 'black',
+                        opacity: fadeOut ? 1 : 0,
+                        transition: 'opacity 0.5s ease-in',
+                        zIndex: 10000,
                     }}
                 />
-            </div>
+            </>
         );
     }
 

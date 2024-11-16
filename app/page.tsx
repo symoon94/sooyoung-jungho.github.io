@@ -27,7 +27,7 @@ const Toaster = dynamic(
 // Add section flags at the top of the file
 const SHOW_RSVP_SECTION = true;
 const SHOW_ACCOUNT_SECTION = false;
-const SHOW_GUESTBOOK_SECTION = false;
+const SHOW_GUESTBOOK_SECTION = true;
 
 export default function Home() {
   const [titleRef, isTitleVisible] = useIntersectionObserver();

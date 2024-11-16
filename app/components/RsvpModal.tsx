@@ -18,27 +18,17 @@ export default function RsvpModal({ isOpen, onClose }: RsvpModalProps) {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const timestamp = new Date().toISOString();
             const content = {
                 name,
                 side: activeTab,
                 attendance,
                 numberOfGuests: attendeeCount,
-                message,
-                submittedAt: timestamp
+                message
             };
 
-            const response = await fetch(`https://api.github.com/repos/sooyoung-jungho/sooyoung-jungho.github.io/contents/rsvp/${timestamp}.json`, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    message: `RSVP submission from ${name}`,
-                    content: Buffer.from(JSON.stringify(content, null, 2)).toString('base64'),
-                    branch: 'main'
-                })
+            const response = await fetch('/.netlify/functions/submitRsvp', {
+                method: 'POST',
+                body: JSON.stringify(content)
             });
 
             if (!response.ok) {

@@ -10,7 +10,7 @@ export default function RedirectComponent() {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const hostname = window.location.hostname;
-            if (hostname.includes('localhost')) {
+            if (hostname.includes('github.io    ')) {
                 setShouldRedirect(true);
                 setTimeout(() => setShowText(true), 100);
 
